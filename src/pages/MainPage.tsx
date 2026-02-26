@@ -228,18 +228,7 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
             </div>
 
             {/* Stats */}
-            <div className="fade-up stats-row" style={{ transitionDelay: "0.36s", display: "grid", gridTemplateColumns: "repeat(3,1fr)", maxWidth: "520px", margin: "72px auto 0", gap: "0" }}>
-              {[
-                { v: "200+", l: "Creators Partnered" },
-                { v: "$4.2M", l: "Revenue Generated" },
-                { v: "3.5x", l: "Avg. Growth Rate" },
-              ].map((s, i) => (
-                <div key={i} style={{ textAlign: "center", padding: "0 16px", borderRight: i < 2 ? "1px solid rgba(255,255,255,0.08)" : "none" }}>
-                  <div style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: "clamp(28px, 4vw, 38px)", letterSpacing: "-0.03em", marginBottom: "4px" }}>{s.v}</div>
-                  <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.38)" }}>{s.l}</div>
-                </div>
-              ))}
-            </div>
+            
           </div>
         </section>
 
