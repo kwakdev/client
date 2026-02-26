@@ -89,6 +89,9 @@ export const ManagementPage: React.FC = () => {
   const totalRevenue = useMemo(() => forms.reduce((s, f) => s + f.monthlyRevenue, 0), [forms]);
   const totalFollowers = useMemo(() => forms.reduce((s, f) => s + f.followerCount, 0), [forms]);
 
+  const renderPieLabel = ({ name, percent }: { name?: string; percent?: number }) =>
+    `${name ?? ""} ${((percent ?? 0) * 100).toFixed(0)}%`;
+
   const cardStyle: React.CSSProperties = {
     background: "rgba(255,255,255,0.03)",
     border: "1px solid rgba(255,255,255,0.07)",
@@ -145,7 +148,18 @@ export const ManagementPage: React.FC = () => {
 
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             {/* Welcome chip */}
-           
+            <div style={{
+              display: "flex", alignItems: "center", gap: "8px",
+              background: "rgba(109,40,217,0.15)", border: "1px solid rgba(139,92,246,0.2)",
+              borderRadius: "999px", padding: "6px 14px",
+            }}>
+              <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "linear-gradient(135deg,#7c3aed,#c026d3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "11px", fontWeight: 700 }}>
+                {managerName.charAt(0).toUpperCase()}
+              </div>
+              <span style={{ fontSize: "13px", color: "rgba(255,255,255,0.7)" }}>
+                Welcome, <span style={{ color: "#fff", fontWeight: 600 }}>{managerName}</span>
+              </span>
+            </div>
             <button className="logout-btn" onClick={handleLogout}>Sign Out</button>
           </div>
         </nav>
@@ -202,7 +216,7 @@ export const ManagementPage: React.FC = () => {
               <h2 style={{ fontSize: "14px", fontWeight: 600, marginBottom: "24px", color: "rgba(255,255,255,0.7)" }}>Revenue by Platform</h2>
               <ResponsiveContainer width="100%" height={260}>
                 <PieChart>
-                  <Pie data={revenueByPlatform} dataKey="value" nameKey="name" outerRadius={95} innerRadius={45} paddingAngle={3} label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`} labelLine={false}>
+                  <Pie data={revenueByPlatform} dataKey="value" nameKey="name" outerRadius={95} innerRadius={45} paddingAngle={3} label={renderPieLabel} labelLine={false}>
                     {revenueByPlatform.map((_, i) => (
                       <Cell key={i} fill={COLORS[i % COLORS.length]} />
                     ))}

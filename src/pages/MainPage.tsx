@@ -303,7 +303,7 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
                 desc: "No upfront fees, no retainers. We invest in you first and only earn when you succeed.",
               },
               {
-                icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><bolt/><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
+                icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
                 title: "Full-Stack Support",
                 desc: "Strategy, content optimization, brand deals, product launches—we handle it all.",
               },
