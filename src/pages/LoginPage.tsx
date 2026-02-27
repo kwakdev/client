@@ -9,28 +9,53 @@ export const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setStatus("");
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/Manager/Login`, {
+  e.preventDefault();
+  setLoading(true);
+  setStatus("");
+
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/api/Manager/Login`,
+      {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok || data.token?.toLowerCase().includes("failed") || data.token?.toLowerCase().includes("invalid")) {
-        setStatus(data.token ?? "Login failed.");
-      } else {
-        localStorage.setItem("token", data.token);
-        navigate("/management");
       }
-    } catch {
-      setStatus("Network error, please try again.");
-    } finally {
-      setLoading(false);
+    );
+
+    // Safely parse JSON only if the response is JSON
+    const contentType = res.headers.get("content-type") || "";
+    const isJson = contentType.includes("application/json");
+
+    const data = isJson ? await res.json() : null;
+    const text = !isJson ? await res.text() : "";
+
+    if (!res.ok) {
+      // Prefer server-provided message if present
+      const msg =
+        data?.message ||
+        data?.error ||
+        data?.token || // if your API returns failures in token field
+        text ||
+        `Login failed (${res.status}).`;
+      setStatus(msg);
+      return;
     }
-  };
+
+    const token = data?.token;
+    if (!token || typeof token !== "string") {
+      setStatus("Login succeeded but no token was returned.");
+      return;
+    }
+
+    localStorage.setItem("token", token);
+    navigate("/management");
+  } catch {
+    setStatus("Network error, please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const inputStyle: React.CSSProperties = {
     width: "100%",

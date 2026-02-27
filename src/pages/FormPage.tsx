@@ -14,34 +14,45 @@ export const FormPage: React.FC = () => {
   const [status, setStatus] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setStatus("Submitting...");
-    try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/forms`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          email,
-          socialType: platform,
-          monthlyRevenue: parseFloat(monthlyRevenue) || 0,
-          followerCount: parseInt(followerCount) || 0,
-          goals,
-          niche,
-        }),
-      });
-      if (!res.ok) {
-        const text = await res.text();
-        setStatus(`Error: ${text}`);
-      } else {
-        setStatus("Form submitted successfully!");
-        setName(""); setEmail(""); setPlatform(""); setFollowerCount("");
-        setMonthlyRevenue(""); setNiche(""); setGoals("");
-      }
-    } catch {
-      setStatus("Network error, please try again.");
+  e.preventDefault();
+  setStatus("Submitting...");
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const revenueNumber = Number(monthlyRevenue.replace(/[^0-9.]/g, ""));
+    const followersNumber = Number(followerCount.replace(/[^0-9]/g, ""));
+
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/forms`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        socialType: platform,
+        monthlyRevenue: Number.isFinite(revenueNumber) ? revenueNumber : 0,
+        followerCount: Number.isFinite(followersNumber) ? followersNumber : 0,
+        goals,
+        niche,
+      }),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      setStatus(`Error (${res.status}): ${text}`);
+      return;
     }
-  };
+
+    setStatus("Form submitted successfully!");
+    setName(""); setEmail(""); setPlatform(""); setFollowerCount("");
+    setMonthlyRevenue(""); setNiche(""); setGoals("");
+  } catch (err) {
+    setStatus("Network error, please try again.");
+  }
+};
 
   const inputStyle: React.CSSProperties = {
     width: "100%",

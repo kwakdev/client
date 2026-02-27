@@ -48,7 +48,7 @@ export const ManagementPage: React.FC = () => {
     const fetchForms = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/forms`, {
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/forms`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (res.status === 401) {
