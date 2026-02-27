@@ -13,7 +13,7 @@ export const LoginPage: React.FC = () => {
     setLoading(true);
     setStatus("");
     try {
-      const res = await fetch("https://localhost:7051/api/Manager/Login", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/Manager/Login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

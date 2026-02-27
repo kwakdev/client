@@ -17,7 +17,7 @@ export const FormPage: React.FC = () => {
     e.preventDefault();
     setStatus("Submitting...");
     try {
-      const res = await fetch("https://localhost:7051/api/forms", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/forms`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
