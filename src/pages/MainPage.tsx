@@ -34,9 +34,9 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
   const faqs = [
     { q: "How does the profit share work?", a: "We take a small percentage of the revenue we help you generate — nothing upfront. If you don't earn, we don't earn. It's that simple." },
     { q: "What size creators do you work with?", a: "We work with creators from 5K followers all the way to 1M+. What matters more than size is engagement, niche, and your growth trajectory." },
-    { q: "What exactly do you handle?", a: "Brand deals, content strategy, monetization systems, product launches, sponsorship negotiations, and analytics. Basically the business side so you can focus on creating." },
-    { q: "How long are partnerships?", a: "We start with a 3-month trial period. Most creators stay long-term — our average partnership is 14 months and counting." },
-    { q: "Why 'shadow operator'?", a: "We work behind the scenes. Your audience never knows we exist. We're your invisible infrastructure — strategy, ops, and deals — all handled quietly." },
+    { q: "What exactly do you handle?", a: "Product strategy, monetization systems, product launches, and analytics. Basically, the business side, so you can focus on creating." },
+    { q: "How long are partnerships?", a: "We work on a project basis. Timelines depend on the scope of your digital product." },
+    { q: "Why 'shadow operator'?", a: "We work behind the scenes. Your audience never knows we exist. We're your invisible infrastructure — strategy and operations — all handled quietly." },
     {
       q: "Why should you trust us?",
       a: (
@@ -210,12 +210,14 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
             <h1 className="fade-up" style={{ transitionDelay: "0.12s", fontFamily: "'Archivo Black', sans-serif", fontSize: "clamp(52px, 8vw, 90px)", lineHeight: 1.0, letterSpacing: "-0.03em", margin: "0 auto 20px" }}>
               You create.<br />
               <span style={{ background: "linear-gradient(90deg, #9b6dff, #e040fb)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                We multiply.
+                We build
               </span>
             </h1>
 
             <p className="fade-up" style={{ transitionDelay: "0.2s", color: "rgba(255,255,255,0.45)", fontSize: "clamp(15px, 1.8vw, 17px)", maxWidth: "560px", margin: "0 auto 44px", lineHeight: 1.75 }}>
-              Tiviala is your invisible growth partner. We handle strategy, operations, and monetization while you focus on what you love—creating. We only win when you win.
+              We help creators turn their audience into structured digital products — from idea development to final build.
+              
+             Every product is carefully organized, professionally built, and delivered launch-ready so you can start monetizing with clarity and confidence.
             </p>
 
             <div className="fade-up hero-btns" style={{ transitionDelay: "0.28s", display: "flex", gap: "4px", justifyContent: "center", alignItems: "center" }}>
@@ -247,7 +249,7 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
                 n: "01",
                 icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>,
                 title: "Apply & Get Matched",
-                desc: "Tell us about your brand and goals. We assess fit and assign you a dedicated growth strategist.",
+                desc: "Tell us about your brand and goals. If we’re a good fit, we’ll reach out with next steps.",
               },
               {
                 n: "02",
@@ -280,7 +282,7 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
               Your unfair advantage
             </h2>
             <p className="fade-up" style={{ color: "rgba(255,255,255,0.42)", fontSize: "16px", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
-              We're not an agency. We're your shadow partner—working invisibly to amplify everything you do.
+              From idea to finished digital product — we handle the build so you don’t have to.
             </p>
           </div>
 
@@ -294,17 +296,17 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
               {
                 icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>,
                 title: "Full-Stack Support",
-                desc: "Strategy, content optimization, brand deals, product launches—we handle it all.",
+                desc: "Strategy, product development, product launches — we handle it all",
               },
               {
                 icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-                title: "Dedicated Team",
-                desc: "Your personal growth squad working behind the scenes, 7 days a week.",
+                title: "Precision Execution",
+                desc: "We focus on quality and clarity — building digital products that are structured and professional.",
               },
               {
                 icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
-                title: "Data-Driven Growth",
-                desc: "We use analytics and market insights to find untapped revenue opportunities.",
+                title: "Technical Build",
+                desc: "We handle the backend setup so everything works smoothly.",
               },
               {
                 icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
@@ -314,7 +316,7 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
               {
                 icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>,
                 title: "Aligned Incentives",
-                desc: "Our success is tied to yours. We're genuinely invested in your growth.",
+                desc: " Our success is tied to yours. We’re invested in delivering a product that performs.",
               },
             ].map((f, i) => (
               <div key={i} className="card">
@@ -334,7 +336,7 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
               How we estimate your potential
             </h2>
             <p className="fade-up" style={{ color: "rgba(255,255,255,0.42)", fontSize: "16px", maxWidth: "520px", margin: "0 auto", lineHeight: 1.7 }}>
-              We don't guess. We use real engagement data and industry conversion rates to project what you could earn.
+              We base projections on real engagement metrics and standard digital product conversion benchmarks.
             </p>
           </div>
 
@@ -348,17 +350,17 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
               {
                 icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>,
                 title: "Conversion Tracking",
-                desc: "Using industry benchmarks and our database of 200+ creators, we estimate your conversion potential across different revenue streams.",
+                desc: "We review your audience engagement and apply standard digital product conversion assumptions to project potential sales.",
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
-                title: "Growth Modeling",
-                desc: "We project your revenue growth based on engagement patterns, niche performance data, and proven monetization strategies.",
+                title: "Revenue Modeling",
+                desc: "We project potential revenue based on engagement patterns and assumptions about digital product conversion.",
               },
               {
                 icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
-                title: "Revenue Estimate",
-                desc: "You get a clear, data-backed estimate of what you could earn with optimized brand deals, products, and sponsorships.",
+                title: "Product Viability",
+                desc: "We assess whether your audience engagement supports the launch of a digital product.",
               },
             ].map((item, i) => (
               <div key={i} className="card" style={{ padding: "32px" }}>
@@ -379,7 +381,7 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
               {[
                 { v: "4.2%", l: "Avg. Engagement Rate", c: "#9b6dff" },
                 { v: "2.1%", l: "Conversion Rate", c: "#e040fb" },
-                { v: "$8.5K", l: "Monthly Potential", c: "#fff" },
+                { v: "$5K", l: "Potential", c: "#fff" },
               ].map((s, i) => (
                 <div key={i} style={{ textAlign: "center" }}>
                   <div style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: "clamp(24px, 3vw, 32px)", color: s.c, letterSpacing: "-0.03em", marginBottom: "6px" }}>{s.v}</div>
@@ -388,7 +390,7 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
               ))}
             </div>
             <p style={{ textAlign: "center", fontSize: "12px", color: "rgba(255,255,255,0.28)", fontStyle: "italic" }}>
-              *Based on a creator with 50K followers, 4.2% engagement, in the business niche
+              *Based on a creator with 25k followers, 4.2% engagement, in the business niche
             </p>
           </div>
         </section>
@@ -452,13 +454,13 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
 
             <div style={{ position: "relative", zIndex: 1 }}>
               <h2 style={{ fontFamily: "'Archivo Black', sans-serif", fontSize: "clamp(30px, 5vw, 54px)", letterSpacing: "-0.03em", lineHeight: 1.05, marginBottom: "20px" }}>
-                Ready to scale your<br />
+                Ready to launch your<br />
                 <span style={{ background: "linear-gradient(90deg, #9b6dff, #e040fb)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                  creator business?
+                  digital product?
                 </span>
               </h2>
               <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "15px", maxWidth: "440px", margin: "0 auto 36px", lineHeight: 1.75 }}>
-                Join 200+ creators who've unlocked exponential growth with a shadow partner that's fully invested in their success.
+                We help creators turn their audience into a monetized online product — structured and built for you.
               </p>
               <button className="apply-white" onClick={handleApply}>
                 Apply Now — It's Free <span>→</span>
