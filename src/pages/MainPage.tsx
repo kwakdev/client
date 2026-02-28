@@ -210,7 +210,7 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
             <h1 className="fade-up" style={{ transitionDelay: "0.12s", fontFamily: "'Archivo Black', sans-serif", fontSize: "clamp(52px, 8vw, 90px)", lineHeight: 1.0, letterSpacing: "-0.03em", margin: "0 auto 20px" }}>
               You create.<br />
               <span style={{ background: "linear-gradient(90deg, #9b6dff, #e040fb)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                We build
+                We build.
               </span>
             </h1>
 
