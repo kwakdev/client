@@ -390,7 +390,8 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
               ))}
             </div>
             <p style={{ textAlign: "center", fontSize: "12px", color: "rgba(255,255,255,0.28)", fontStyle: "italic" }}>
-              *Based on a creator with 25k followers, 4.2% engagement, in the business niche
+              *Based on a creator with 25k followers, 42% engagement, priced at 200$, in the business niche
+
             </p>
           </div>
         </section>
