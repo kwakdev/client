@@ -239,7 +239,9 @@ export const FormPage: React.FC = () => {
             <p style={{ textAlign: "center", fontSize: "13px", color: "rgba(255,255,255,0.28)", marginTop: "2px" }}>
               We'll review your application and respond within 48 hours.
             </p>
-
+            <p style={{ textAlign: "center", fontSize: "13px", color: "rgba(255,255,255,0.28)", marginTop: "2px" }}>
+              We won't work with you if you are botting, racist, political, or any hateful content, no matter the severity.
+            </p>
             {status && (
               <p style={{ textAlign: "center", fontSize: "13px", color: status.startsWith("Error") || status.startsWith("Network") ? "#f87171" : "#4ade80" }}>
                 {status}
