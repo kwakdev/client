@@ -10,7 +10,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/formPage" element={<FormPage />} />
+        <Route path="/form" element={<FormPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route
           path="/management"
@@ -20,6 +20,9 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        {/* fallback */}
+        <Route path="*" element={<MainPage />} />
       </Routes>
     </Router>
   );

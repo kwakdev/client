@@ -43,6 +43,10 @@ export const LoginPage: React.FC = () => {
     }
 
     const token = data?.token;
+    if (!token || typeof token !== "string" || token.toLowerCase().includes("failed")) {
+  setStatus(data?.token || "Login failed.");
+  return;
+}
     if (!token || typeof token !== "string") {
       setStatus("Login succeeded but no token was returned.");
       return;
