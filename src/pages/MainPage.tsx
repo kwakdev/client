@@ -10,7 +10,7 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
 
   const handleApply = () => {
     if (onApply) onApply();
-    navigate("/formPage");
+    navigate("/form");
   };
 
   useEffect(() => {

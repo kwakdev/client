@@ -17,11 +17,7 @@ export const FormPage: React.FC = () => {
   const [statusKind, setStatusKind] = useState<"idle" | "info" | "success" | "error">("idle");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // ✅ Range-safe parsing:
-  // - "2,000-5,000" -> 2000
-  // - "$2,000-$5,000" -> 2000
-  // - "about 2500" -> 2500
-  // - empty/invalid -> null
+  
   const parseFirstNumber = (value: string): number | null => {
     const match = value.replace(/,/g, "").match(/(\d+(\.\d+)?)/);
     if (!match) return null;
