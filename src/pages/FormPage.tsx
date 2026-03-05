@@ -487,7 +487,16 @@ export const FormPage: React.FC = () => {
             <p style={{ textAlign: "center", fontSize: "13px", color: "rgba(255,255,255,0.28)", marginTop: "2px" }}>
               We won't work with you if you are botting, racist, political, or any hateful content, no matter the severity.
             </p>
-
+<p style={{ textAlign: "center", fontSize: "13px", color: "rgba(255,255,255,0.28)", marginTop: "2px" }}>
+  Having trouble submitting the form? You can email your application directly to{" "}
+  <a
+    href="mailto:info@tiviala.com"
+    style={{ color: "rgba(167,139,250,0.9)", textDecoration: "none" }}
+  >
+    info@tiviala.com
+  </a>{" "}
+  and we’ll make sure it gets reviewed.
+</p>
             {status && (
               <p style={{ textAlign: "center", fontSize: "13px", color: statusColor }}>
                 {status}
