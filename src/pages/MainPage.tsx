@@ -54,11 +54,7 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
               background: "rgba(255,255,255,0.03)",
             }}
           >
-            <img
-              src={CERT_IMG_SRC}
-              alt="Operator frameworks certificate"
-              style={{ width: "100%", display: "block" }}
-            />
+          
           </div>
 
           <p style={{ margin: 0, color: "rgba(255,255,255,0.55)", fontSize: "13px", lineHeight: 1.7 }}>
