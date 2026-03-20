@@ -29,7 +29,6 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
-  const CERT_IMG_SRC = "/Rory_Pribble_Consulting_Cert.jpg";
 
   const faqs = [
     { q: "How does the profit share work?", a: "We take a small percentage of the revenue we help you generate — nothing upfront. If you don't earn, we don't earn. It's that simple." },
