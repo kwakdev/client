@@ -29,7 +29,6 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
-  const CERT_IMG_SRC = "/Rory_Pribble_Consulting_Cert.jpg";
 
   const faqs = [
     { q: "How does the profit share work?", a: "We take a small percentage of the revenue we help you generate — nothing upfront. If you don't earn, we don't earn. It's that simple." },
@@ -54,11 +53,7 @@ export const MainPage: React.FC<MainPageProps> = ({ onApply }) => {
               background: "rgba(255,255,255,0.03)",
             }}
           >
-            <img
-              src={CERT_IMG_SRC}
-              alt="Operator frameworks certificate"
-              style={{ width: "100%", display: "block" }}
-            />
+          
           </div>
 
           <p style={{ margin: 0, color: "rgba(255,255,255,0.55)", fontSize: "13px", lineHeight: 1.7 }}>
