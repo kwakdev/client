@@ -23,10 +23,10 @@ interface Form {
   followerCount: number;
   goals: string;
   niche: string;
+  isEmailed: boolean;
   submittedAt: string;
 }
 
-// JWT is base64url encoded, so we need to normalize to base64 for atob
 function decodeJwtPayload(token: string): any | null {
   try {
     const parts = token.split(".");
@@ -69,14 +69,14 @@ export const ManagementPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const managerName = getManagerName();
-
-  // Hovered pie slice index (for label color)
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
+
+  const getAuthToken = () => localStorage.getItem("token");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -129,6 +129,87 @@ export const ManagementPage: React.FC = () => {
     return () => controller.abort();
   }, [navigate]);
 
+  const handleToggleIsEmailed = async (id: number, checked: boolean) => {
+    const token = getAuthToken();
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const previousForms = forms;
+
+    setForms((prev) =>
+      prev.map((f) => (f.id === id ? { ...f, isEmailed: checked } : f))
+    );
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/api/forms/${id}/email-status`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ isEmailed: checked }),
+        }
+      );
+
+      if (res.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+        return;
+      }
+
+      if (!res.ok) {
+        setForms(previousForms);
+        const text = await res.text().catch(() => "");
+        setError(text || "Failed to update email status.");
+      }
+    } catch {
+      setForms(previousForms);
+      setError("Failed to update email status.");
+    }
+  };
+
+  const handleDeleteForm = async (id: number) => {
+    const confirmed = window.confirm("Delete this submission permanently?");
+    if (!confirmed) return;
+
+    const token = getAuthToken();
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const previousForms = forms;
+    setForms((prev) => prev.filter((f) => f.id !== id));
+
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/forms/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 401) {
+        localStorage.removeItem("token");
+        navigate("/login");
+        return;
+      }
+
+      if (!res.ok) {
+        setForms(previousForms);
+        const text = await res.text().catch(() => "");
+        setError(text || "Failed to delete submission.");
+      }
+    } catch {
+      setForms(previousForms);
+      setError("Failed to delete submission.");
+    }
+  };
+
   const sortedForms = useMemo(
     () =>
       [...forms].sort((a, b) =>
@@ -167,7 +248,6 @@ export const ManagementPage: React.FC = () => {
     [forms]
   );
 
-  // Label renderer: hovered slice text becomes white
   const renderPieLabel = (props: any) => {
     const { name, percent, x, y, index } = props;
     const isActive = index === activeIndex;
@@ -211,6 +291,27 @@ export const ManagementPage: React.FC = () => {
         .mgmt-table tbody tr:hover { background: rgba(255,255,255,0.03); }
         .logout-btn { background: none; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 8px 16px; color: rgba(255,255,255,0.45); font-size: 13px; cursor: pointer; font-family: 'Archivo', sans-serif; transition: color 0.2s, border-color 0.2s; }
         .logout-btn:hover { color: #fff; border-color: rgba(255,255,255,0.25); }
+        .danger-btn {
+          background: rgba(239,68,68,0.12);
+          border: 1px solid rgba(239,68,68,0.3);
+          border-radius: 8px;
+          padding: 7px 12px;
+          color: #fca5a5;
+          font-size: 12px;
+          cursor: pointer;
+          font-family: 'Archivo', sans-serif;
+          transition: 0.2s;
+        }
+        .danger-btn:hover {
+          background: rgba(239,68,68,0.18);
+          color: #fff;
+        }
+        .email-checkbox {
+          width: 16px;
+          height: 16px;
+          cursor: pointer;
+          accent-color: #7c3aed;
+        }
         .recharts-text { fill: rgba(255,255,255,0.45) !important; font-family: 'Archivo', sans-serif !important; font-size: 12px !important; }
         .recharts-cartesian-grid line { stroke: rgba(255,255,255,0.06) !important; }
         .recharts-tooltip-wrapper .recharts-default-tooltip { background: #1a1a2e !important; border: 1px solid rgba(255,255,255,0.1) !important; border-radius: 8px !important; font-family: 'Archivo', sans-serif !important; }
@@ -226,7 +327,6 @@ export const ManagementPage: React.FC = () => {
           padding: "0 0 80px",
         }}
       >
-        {/* Purple orb */}
         <div
           style={{
             position: "fixed",
@@ -243,7 +343,6 @@ export const ManagementPage: React.FC = () => {
           }}
         />
 
-        {/* Nav */}
         <nav
           style={{
             position: "sticky",
@@ -292,7 +391,6 @@ export const ManagementPage: React.FC = () => {
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            {/* Welcome chip */}
             <div
               style={{
                 display: "flex",
@@ -338,7 +436,6 @@ export const ManagementPage: React.FC = () => {
             zIndex: 1,
           }}
         >
-          {/* Page heading */}
           <div style={{ marginBottom: "36px" }}>
             <h1
               style={{
@@ -355,7 +452,6 @@ export const ManagementPage: React.FC = () => {
             </p>
           </div>
 
-          {/* Stat cards */}
           <div
             style={{
               display: "grid",
@@ -395,7 +491,6 @@ export const ManagementPage: React.FC = () => {
             ))}
           </div>
 
-          {/* Charts */}
           <div
             style={{
               display: "grid",
@@ -498,7 +593,6 @@ export const ManagementPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Table */}
           <div style={cardStyle}>
             <h2 style={{ fontSize: "14px", fontWeight: 600, marginBottom: "20px", color: "rgba(255,255,255,0.7)" }}>
               All Submissions{" "}
@@ -522,7 +616,7 @@ export const ManagementPage: React.FC = () => {
                 <table className="mgmt-table" style={{ width: "100%", borderCollapse: "collapse" }}>
                   <thead>
                     <tr>
-                      {["Name", "Email", "Platform", "Revenue", "Followers", "Niche", "Goals", "Submitted"].map(
+                      {["Name", "Email", "Platform", "Revenue", "Followers", "Niche", "Goals", "Will Email", "Submitted", "Actions"].map(
                         (h) => (
                           <th
                             key={h}
@@ -579,8 +673,25 @@ export const ManagementPage: React.FC = () => {
                         >
                           {form.goals}
                         </td>
+                        <td style={{ textAlign: "center" }}>
+                          <input
+                            className="email-checkbox"
+                            type="checkbox"
+                            checked={!!form.isEmailed}
+                            onChange={(e) => handleToggleIsEmailed(form.id, e.target.checked)}
+                            aria-label={`Mark ${form.name} as will be emailed`}
+                          />
+                        </td>
                         <td style={{ color: "rgba(255,255,255,0.35)", whiteSpace: "nowrap" }}>
                           {formatSubmitted(form.submittedAt)}
+                        </td>
+                        <td>
+                          <button
+                            className="danger-btn"
+                            onClick={() => handleDeleteForm(form.id)}
+                          >
+                            Delete
+                          </button>
                         </td>
                       </tr>
                     ))}
