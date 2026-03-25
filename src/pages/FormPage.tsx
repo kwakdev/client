@@ -484,6 +484,20 @@ export const FormPage: React.FC = () => {
             <p style={{ textAlign: "center", fontSize: "13px", color: "rgba(255,255,255,0.28)", marginTop: "2px" }}>
               We'll review your application and respond within 48 hours.
             </p>
+            <p
+  style={{
+    textAlign: "center",
+    fontSize: "12px",
+    color: "rgba(255,255,255,0.32)",
+    marginTop: "6px",
+    lineHeight: "1.5",
+    maxWidth: "520px",
+    marginLeft: "auto",
+    marginRight: "auto",
+  }}
+>
+  Any earnings discussed are estimates only and are not guaranteed. Results vary based on multiple factors including content quality, consistency, and audience engagement.
+</p>
             <p style={{ textAlign: "center", fontSize: "13px", color: "rgba(255,255,255,0.28)", marginTop: "2px" }}>
               We won't work with you if you are botting, racist, political, or any hateful content, no matter the severity.
             </p>
