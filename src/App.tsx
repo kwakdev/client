@@ -3,7 +3,7 @@ import { FormPage } from "./pages/FormPage";
 import { ManagementPage } from "./pages/ManagementPage";
 import { MainPage } from "./pages/MainPage";
 import { LoginPage } from "./pages/LoginPage";
-import { ProtectedRoute } from "./pages/ProtectedRoute";
+import ProtectedRoute  from "./pages/ProtectedRoute";
 
 function App() {
   return (
