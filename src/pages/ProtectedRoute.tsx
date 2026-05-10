@@ -1,33 +1,56 @@
-import React from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { onAuthStateChanged, type User } from "firebase/auth";
 import { Navigate } from "react-router-dom";
+import { auth } from "../firebase";
 
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-}
+const ADMIN_EMAILS = [
+  "evankwak1@gmail.com",
+  "tivialas.info@gmail.com",
+  // add more admin emails here
+];
 
-function isTokenValid(token: string | null) {
-  if (!token) return false;
+type ProtectedRouteProps = {
+  children: ReactNode;
+};
 
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    const exp = payload.exp;
+export default function ProtectedRoute({
+  children,
+}: ProtectedRouteProps) {
+  const [user, setUser] = useState<User | null | undefined>(undefined);
 
-    if (!exp) return false;
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser);
+    });
 
-    const now = Date.now() / 1000;
-    return exp > now;
-  } catch {
-    return false;
+    return () => unsub();
+  }, []);
+
+  if (user === undefined) {
+    return (
+      <div className="min-h-screen bg-black text-white flex items-center justify-center text-xl">
+        Loading...
+      </div>
+    );
   }
-}
 
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const token = localStorage.getItem("token");
-
-  if (!isTokenValid(token)) {
-    localStorage.removeItem("token");
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 
+  const email = user.email?.toLowerCase() ?? "";
+  const isAdmin = ADMIN_EMAILS.map((e) => e.toLowerCase()).includes(email);
+
+  if (!isAdmin) {
+    return (
+      <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 text-center">
+        <h1 className="text-3xl font-bold mb-3">Access Denied</h1>
+        <p className="text-white/70">
+          This Google account is not allowed to access the admin panel.
+        </p>
+      </div>
+    );
+  }
+
   return <>{children}</>;
-};
+}

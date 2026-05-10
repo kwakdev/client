@@ -1,78 +1,40 @@
+// src/pages/LoginPage.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth } from "../firebase";
+
+const provider = new GoogleAuthProvider();
 
 export const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [status, setStatus] = useState("");
+  const navigate              = useNavigate();
+  const [status, setStatus]   = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
-  e.preventDefault();
-  setLoading(true);
-  setStatus("");
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    setStatus("");
 
-  try {
-    const res = await fetch(
-      `${import.meta.env.VITE_API_BASE_URL}/api/Manager/Login`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+    try {
+      await signInWithPopup(auth, provider);
+      navigate("/management");
+    } catch (err: any) {
+      const code: string = err?.code ?? "";
+      if (
+        code === "auth/popup-closed-by-user" ||
+        code === "auth/cancelled-popup-request"
+      ) {
+        // user dismissed — nothing to show
+      } else if (code === "auth/network-request-failed") {
+        setStatus("Network error. Please check your connection.");
+      } else if (code === "auth/unauthorized-domain") {
+        setStatus("This domain isn't authorised. Add it in Firebase → Authentication → Settings.");
+      } else {
+        setStatus("Sign-in failed. Please try again.");
       }
-    );
-
-    // Safely parse JSON only if the response is JSON
-    const contentType = res.headers.get("content-type") || "";
-    const isJson = contentType.includes("application/json");
-
-    const data = isJson ? await res.json() : null;
-    const text = !isJson ? await res.text() : "";
-
-    if (!res.ok) {
-      // Prefer server-provided message if present
-      const msg =
-        data?.message ||
-        data?.error ||
-        data?.token || // if your API returns failures in token field
-        text ||
-        `Login failed (${res.status}).`;
-      setStatus(msg);
-      return;
+    } finally {
+      setLoading(false);
     }
-
-    const token = data?.token;
-    if (!token || typeof token !== "string" || token.toLowerCase().includes("failed")) {
-  setStatus(data?.token || "Login failed.");
-  return;
-}
-    if (!token || typeof token !== "string") {
-      setStatus("Login succeeded but no token was returned.");
-      return;
-    }
-
-    localStorage.setItem("token", token);
-    navigate("/management");
-  } catch {
-    setStatus("Network error, please try again.");
-  } finally {
-    setLoading(false);
-  }
-};
-
-  const inputStyle: React.CSSProperties = {
-    width: "100%",
-    background: "rgba(255,255,255,0.04)",
-    border: "1px solid rgba(255,255,255,0.08)",
-    borderRadius: "10px",
-    padding: "14px 16px",
-    color: "#fff",
-    fontSize: "14px",
-    outline: "none",
-    transition: "border-color 0.2s, background 0.2s",
-    boxSizing: "border-box",
-    fontFamily: "'Archivo', sans-serif",
   };
 
   return (
@@ -80,39 +42,51 @@ export const LoginPage: React.FC = () => {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        .login-input::placeholder { color: rgba(255,255,255,0.22); }
-        .login-input:focus { border-color: rgba(139,92,246,0.55) !important; background: rgba(255,255,255,0.06) !important; }
         .back-btn { background:none; border:none; cursor:pointer; color:rgba(255,255,255,0.4); font-size:14px; display:flex; align-items:center; gap:6px; font-family:'Archivo',sans-serif; transition:color 0.2s; padding:0; }
         .back-btn:hover { color:#fff; }
-        .login-btn { width:100%; padding:15px; border-radius:999px; border:none; background:linear-gradient(90deg,#7c3aed,#c026d3); color:#fff; font-size:15px; font-weight:600; cursor:pointer; font-family:'Archivo',sans-serif; box-shadow:0 4px 30px rgba(168,85,247,0.35); transition:opacity 0.2s, transform 0.1s; }
-        .login-btn:hover:not(:disabled) { opacity:0.88; }
-        .login-btn:active:not(:disabled) { transform:scale(0.985); }
-        .login-btn:disabled { opacity:0.5; cursor:not-allowed; }
+        .google-btn {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          padding: 15px 20px;
+          border-radius: 999px;
+          border: 1px solid rgba(255,255,255,0.12);
+          background: rgba(255,255,255,0.06);
+          color: #fff;
+          font-size: 15px;
+          font-weight: 600;
+          font-family: 'Archivo', sans-serif;
+          cursor: pointer;
+          transition: background 0.2s, border-color 0.2s, transform 0.1s;
+          backdrop-filter: blur(8px);
+        }
+        .google-btn:hover:not(:disabled) {
+          background: rgba(255,255,255,0.1);
+          border-color: rgba(255,255,255,0.22);
+        }
+        .google-btn:active:not(:disabled) { transform: scale(0.985); }
+        .google-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        @keyframes spin { to { transform: rotate(360deg); } }
       `}</style>
 
       <div style={{
-        minHeight: "100vh",
-        backgroundColor: "#000",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        fontFamily: "'Archivo', sans-serif",
-        color: "#fff",
-        position: "relative",
-        overflow: "hidden",
-        padding: "24px",
+        minHeight: "100vh", backgroundColor: "#000", display: "flex",
+        flexDirection: "column", alignItems: "center", justifyContent: "center",
+        fontFamily: "'Archivo', sans-serif", color: "#fff",
+        position: "relative", overflow: "hidden", padding: "24px",
       }}>
 
         {/* Purple orb */}
         <div style={{
-          position: "fixed", top: "0", left: "50%", transform: "translateX(-50%)",
+          position: "fixed", top: 0, left: "50%", transform: "translateX(-50%)",
           width: "700px", height: "500px", pointerEvents: "none", zIndex: 0,
           background: "radial-gradient(ellipse at center, rgba(109,40,217,0.2) 0%, rgba(76,29,149,0.08) 50%, transparent 70%)",
           filter: "blur(40px)",
-        }} />
+        }}/>
 
-        {/* Back button top-left */}
+        {/* Back button */}
         <div style={{ position: "fixed", top: "28px", left: "40px", zIndex: 10 }}>
           <button className="back-btn" onClick={() => navigate("/")}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -122,10 +96,8 @@ export const LoginPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Card */}
-        <div style={{
-          width: "100%", maxWidth: "420px", position: "relative", zIndex: 1,
-        }}>
+        <div style={{ width: "100%", maxWidth: "420px", position: "relative", zIndex: 1 }}>
+
           {/* Logo */}
           <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "40px", justifyContent: "center" }}>
             <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "linear-gradient(135deg,#7c3aed,#c026d3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -142,67 +114,41 @@ export const LoginPage: React.FC = () => {
               Management Login
             </h1>
             <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "14px", lineHeight: 1.6 }}>
-              Sign in to access the management dashboard.
+              Sign in with your Google account to access the dashboard.
             </p>
           </div>
 
-          {/* Form card */}
+          {/* Card */}
           <div style={{
-            background: "rgba(255,255,255,0.025)",
-            border: "1px solid rgba(255,255,255,0.07)",
-            borderRadius: "20px", padding: "32px",
-            backdropFilter: "blur(24px)",
+            background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.07)",
+            borderRadius: "20px", padding: "32px", backdropFilter: "blur(24px)",
             boxShadow: "0 32px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05)",
           }}>
-            <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-
-              <div>
-                <label style={{ display: "block", fontSize: "13px", fontWeight: 500, color: "#e2e2e2", marginBottom: "8px", fontFamily: "'Archivo', sans-serif" }}>
-                  Email <span style={{ color: "#a78bfa" }}>*</span>
-                </label>
-                <input
-                  className="login-input"
-                  style={inputStyle}
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  required
-                  autoComplete="email"
-                />
-              </div>
-
-              <div>
-                <label style={{ display: "block", fontSize: "13px", fontWeight: 500, color: "#e2e2e2", marginBottom: "8px", fontFamily: "'Archivo', sans-serif" }}>
-                  Password <span style={{ color: "#a78bfa" }}>*</span>
-                </label>
-                <input
-                  className="login-input"
-                  style={inputStyle}
-                  type="password"
-                  placeholder="••••••••"
-                  value={password}
-                  onChange={e => setPassword(e.target.value)}
-                  required
-                  autoComplete="current-password"
-                />
-              </div>
-
-              <button type="submit" className="login-btn" disabled={loading} style={{ marginTop: "4px" }}>
-                {loading ? "Signing in..." : "Sign In"}
-              </button>
-
-              {status && (
-                <p style={{
-                  textAlign: "center", fontSize: "13px",
-                  color: status.toLowerCase().includes("failed") || status.toLowerCase().includes("error") || status.toLowerCase().includes("invalid")
-                    ? "#f87171" : "#4ade80",
-                  marginTop: "4px",
-                }}>
-                  {status}
-                </p>
+            <button className="google-btn" onClick={handleGoogleLogin} disabled={loading}>
+              {loading ? (
+                /* spinner */
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                  strokeLinecap="round" strokeLinejoin="round"
+                  style={{ animation: "spin 1s linear infinite" }}>
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                </svg>
+              ) : (
+                /* Official Google G */
+                <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true">
+                  <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                  <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                  <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                  <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                </svg>
               )}
-            </form>
+              {loading ? "Signing in…" : "Continue with Google"}
+            </button>
+
+            {status && (
+              <p style={{ textAlign: "center", fontSize: "13px", color: "#f87171", marginTop: "20px" }}>
+                {status}
+              </p>
+            )}
           </div>
 
           <p style={{ textAlign: "center", fontSize: "12px", color: "rgba(255,255,255,0.18)", marginTop: "24px" }}>
